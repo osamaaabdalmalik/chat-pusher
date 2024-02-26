@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:pusher/core/constants/app_keys.dart';
 import 'package:pusher/core/constants/app_pages_routes.dart';
 import 'package:pusher/core/constants/app_themes.dart';
@@ -11,6 +12,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle(
+      systemNavigationBarColor:
+      SystemUiOverlayStyle.dark.systemNavigationBarColor,
+    ),
+  );
   final SharedPreferences pref = await SharedPreferences.getInstance();
   Get.put(pref);
   initLang();

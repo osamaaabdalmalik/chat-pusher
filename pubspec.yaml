@@ -52,6 +52,7 @@ dependencies:
   shimmer: ^3.0.0
   flutter_easyloading: ^3.0.5
   flutter_inset_box_shadow: ^1.0.8
+  flutter_login: ^5.0.0
 
 dev_dependencies:
   flutter_test:

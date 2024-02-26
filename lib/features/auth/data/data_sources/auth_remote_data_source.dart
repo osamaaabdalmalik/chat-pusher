@@ -4,14 +4,14 @@ import 'package:pusher/core/constants/app_api_routes.dart';
 import 'package:pusher/core/services/api_service.dart';
 import 'package:pusher/features/main/data/models/pair_model.dart';
 
-abstract class QuranRemoteDataSource {
+abstract class AuthRemoteDataSource {
   Future<List<PairModel>> getCategoriesAsPair({required int repositoryId});
 }
 
-class QuranRemoteDataSourceImpl extends QuranRemoteDataSource {
+class AuthRemoteDataSourceImpl extends AuthRemoteDataSource {
   final ApiService apiService;
 
-  QuranRemoteDataSourceImpl({required this.apiService});
+  AuthRemoteDataSourceImpl({required this.apiService});
 
   @override
   Future<List<PairModel>> getCategoriesAsPair({required int repositoryId}) async {
