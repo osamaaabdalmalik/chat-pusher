@@ -54,6 +54,7 @@ dependencies:
   flutter_inset_box_shadow: ^1.0.8
   flutter_login: ^5.0.0
   font_awesome_flutter: ^10.7.0
+  dash_chat_2: ^0.0.20
 
 dev_dependencies:
   flutter_test:

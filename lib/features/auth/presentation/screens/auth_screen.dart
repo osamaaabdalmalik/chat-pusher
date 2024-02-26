@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:pusher/core/constants/app_pages_routes.dart';
 import 'package:pusher/features/auth/presentation/controller/auth_controller.dart';
 
 class AuthScreen extends GetView<AuthController> {
@@ -14,12 +15,16 @@ class AuthScreen extends GetView<AuthController> {
       title: 'Chat Pusher',
       logo: const AssetImage('assets/image/chat.png'),
       onLogin: (p0) {
+        Get.toNamed(AppPagesRoutes.chatScreen);
         return;
       },
       onSignup: (p0) {
         return;
       },
-
+      passwordValidator: (value) {
+        return null;
+      },
+      savedEmail: "osama@gmail.com",
       loginProviders: <LoginProvider>[
         LoginProvider(
           icon: FontAwesomeIcons.google,
