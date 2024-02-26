@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:pusher/features/auth/data/data_sources/auth_remote_data_source.dart';
 import 'package:pusher/features/auth/data/repository/auth_repo_impl.dart';
 import 'package:pusher/features/auth/domain/repository/auth_repo.dart';
+import 'package:pusher/features/auth/presentation/controller/auth_controller.dart';
 
 class AuthBindings extends Bindings {
   @override
@@ -14,6 +15,6 @@ class AuthBindings extends Bindings {
     );
 
 //    Get.put(GetCategoriesAsPairUseCase(Get.find()));
-//    Get.put(MainController());
+    Get.put(AuthController());
   }
 }
