@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "38280074930",
+    "project_id": "pusher-notification-49f3d",
+    "storage_bucket": "pusher-notification-49f3d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:38280074930:android:a0309b7900a754e0825bab",
+        "android_client_info": {
+          "package_name": "com.example.pusher"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyMFz7SkoTVz946Av3JwtY8t3zs4YcFF0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
