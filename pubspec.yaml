@@ -55,6 +55,8 @@ dependencies:
   flutter_login: ^5.0.0
   font_awesome_flutter: ^10.7.0
   dash_chat_2: ^0.0.20
+  laravel_echo_null: ^0.0.5+9
+  pusher_client: ^2.0.0
 
 dev_dependencies:
   flutter_test:
