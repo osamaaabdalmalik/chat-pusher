@@ -1,7 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:pusher/core/errors/failures.dart';
-import 'package:pusher/features/main/domain/entities/pair_entity.dart';
+import 'package:pusher/features/auth/domain/entities/user_auth_entity.dart';
+import 'package:pusher/features/auth/domain/entities/user_entity.dart';
 
 abstract class AuthRepo {
-  Future<Either<Failure, List<Pair>>> getCategoriesAsPair({required int repositoryId});
+  Future<Either<Failure, UserAuth>> register({required User user});
 }

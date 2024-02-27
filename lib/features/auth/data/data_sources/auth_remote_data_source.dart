@@ -2,10 +2,11 @@ import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:pusher/core/constants/app_api_routes.dart';
 import 'package:pusher/core/services/api_service.dart';
-import 'package:pusher/features/main/data/models/pair_model.dart';
+import 'package:pusher/features/auth/data/models/user_auth_model.dart';
+import 'package:pusher/features/auth/data/models/user_model.dart';
 
 abstract class AuthRemoteDataSource {
-  Future<List<PairModel>> getCategoriesAsPair({required int repositoryId});
+  Future<UserAuthModel> register({required UserModel userModel});
 }
 
 class AuthRemoteDataSourceImpl extends AuthRemoteDataSource {
@@ -14,27 +15,21 @@ class AuthRemoteDataSourceImpl extends AuthRemoteDataSource {
   AuthRemoteDataSourceImpl({required this.apiService});
 
   @override
-  Future<List<PairModel>> getCategoriesAsPair({required int repositoryId}) async {
+  Future<UserAuthModel> register({required UserModel userModel}) async {
     try {
-      Get.find<Logger>().i("Start `getCategoriesAsPair` in |MainRemoteDataSourceImpl|");
+      Get.find<Logger>().i("Start `register` in |MainRemoteDataSourceImpl|");
 
-      Map<String, dynamic> mapData = await apiService.get(
-        subUrl: AppApiRoutes.getCategoriesAsPair,
-        parameters: {
-          'repository_id': repositoryId.toString(),
-        },
+      Map<String, dynamic> mapData = await apiService.post(
+        subUrl: AppApiRoutes.register,
+        data: userModel.toJson(),
       );
-      final List<PairModel> expenses = mapData['data']
-          .map<PairModel>(
-            (item) => PairModel.fromJson(item),
-          )
-          .toList();
+      final userAuthModel = UserAuthModel.fromJson(mapData['data']);
 
-      Get.find<Logger>().f("End `getCategoriesAsPair` in |MainRemoteDataSourceImpl|");
-      return Future.value(expenses);
+      Get.find<Logger>().f("End `register` in |MainRemoteDataSourceImpl|");
+      return Future.value(userAuthModel);
     } catch (e) {
       Get.find<Logger>().e(
-        "End `getCategoriesAsPair` in |MainRemoteDataSourceImpl| Exception: ${e.runtimeType}",
+        "End `register` in |MainRemoteDataSourceImpl| Exception: ${e.runtimeType}",
       );
       rethrow;
     }
