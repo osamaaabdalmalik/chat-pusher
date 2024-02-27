@@ -13,4 +13,11 @@ class UserAuthModel extends UserAuth {
       token: json['token'],
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'user': user.toModel().toJson(),
+      'token': token,
+    };
+  }
 }

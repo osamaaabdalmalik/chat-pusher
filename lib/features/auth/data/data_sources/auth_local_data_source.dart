@@ -25,8 +25,7 @@ class AuthLocalDataSourceImpl extends AuthLocalDataSource {
   @override
   Future<Unit> setUser({required UserAuthModel userAuthModel}) async {
     Get.find<Logger>().i("Start setUser in AuthLocalDataSourceImpl");
-    Object userJson = jsonEncode(userAuthModel);
-    final isStoreUser = await pref.setString(AppKeys.user, json.encode(userJson));
+    final isStoreUser = await pref.setString(AppKeys.user, json.encode(userAuthModel.toJson()));
     Get.find<Logger>().f(
       "End setUser in AuthLocalDataSourceImpl isStoreUser: $isStoreUser",
     );
