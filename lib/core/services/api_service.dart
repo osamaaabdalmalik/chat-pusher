@@ -20,7 +20,7 @@ class ApiService extends GetxService {
   @override
   void onInit() {
     Get.find<Logger>().i('Start onInit in ApiServiceImpl');
-    Get.find<Logger>().f('End onInit in ApiServiceImpl');
+    Get.find<Logger>().w('End onInit in ApiServiceImpl');
     super.onInit();
   }
 
@@ -43,7 +43,7 @@ class ApiService extends GetxService {
         headers: setHeaders(),
       );
       getExceptionStatusCode(response);
-      Get.find<Logger>().f('End post `$subUrl` |ApiServiceImpl| response: ${json.decode(response.body)}');
+      Get.find<Logger>().w('End post `$subUrl` |ApiServiceImpl| response: ${json.decode(response.body)}');
       return Future.value(json.decode(response.body));
     } catch (e) {
       Get.find<Logger>().e('End post `$subUrl` |ApiServiceImpl| Exception: ${e.runtimeType}');
@@ -72,7 +72,7 @@ class ApiService extends GetxService {
         headers: setHeaders(),
       );
       getExceptionStatusCode(response);
-      Get.find<Logger>().f('End get `$subUrl` |ApiServiceImpl| response: ${response.body}');
+      Get.find<Logger>().w('End get `$subUrl` |ApiServiceImpl| response: ${response.body}');
       return Future.value((json.decode(response.body)));
     } catch (e) {
       Get.find<Logger>().e('End get `$subUrl` |ApiServiceImpl| Exception: ${e.runtimeType}');

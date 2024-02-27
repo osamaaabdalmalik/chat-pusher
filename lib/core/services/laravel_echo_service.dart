@@ -47,7 +47,7 @@ class LaravelEchoService extends GetxService {
         },
       ),
     );
-    Get.find<Logger>().f('End onInit in LaravelEchoService');
+    Get.find<Logger>().w('End onInit in LaravelEchoService');
     super.onInit();
   }
 }

@@ -8,7 +8,7 @@ class MainController extends GetxController{
   void onInit() {
     Get.find<Logger>().i("Start onInit MainController");
     super.onInit();
-    Get.find<Logger>().f("End onInit MainController");
+    Get.find<Logger>().w("End onInit MainController");
   }
 
 }

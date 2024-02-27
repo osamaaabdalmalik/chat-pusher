@@ -18,7 +18,7 @@ class OneSignalService extends GetxService {
     OneSignal.consentGiven(true);
     OneSignal.initialize(_appId);
 
-    Get.find<Logger>().f('End onInit in OneSignalService');
+    Get.find<Logger>().w('End onInit in OneSignalService');
     super.onInit();
   }
 
@@ -39,7 +39,7 @@ class OneSignalService extends GetxService {
     OneSignal.User.addTags({tagName: userId.toString()}).then((response) {
       Get.find<Logger>().i("Successfully sent tags with response");
     }).catchError((error) {
-      Get.find<Logger>().f("Encountered an error sending tags: $error");
+      Get.find<Logger>().w("Encountered an error sending tags: $error");
     });
   }
 
@@ -47,7 +47,7 @@ class OneSignalService extends GetxService {
     OneSignal.User.removeTag(tagName).then((response) {
       Get.find<Logger>().i("Successfully deleted tags with response");
     }).catchError((error) {
-      Get.find<Logger>().f("Encountered error deleting tag: $error");
+      Get.find<Logger>().w("Encountered error deleting tag: $error");
     });
   }
 }

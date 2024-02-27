@@ -36,7 +36,7 @@ class ChatController extends GetxController{
   void onInit() {
     Get.find<Logger>().i("Start onInit ChatController");
     super.onInit();
-    Get.find<Logger>().f("End onInit ChatController");
+    Get.find<Logger>().w("End onInit ChatController");
   }
 
 }

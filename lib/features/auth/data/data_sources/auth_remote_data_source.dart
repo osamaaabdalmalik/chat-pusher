@@ -30,7 +30,7 @@ class AuthRemoteDataSourceImpl extends AuthRemoteDataSource {
       );
       final userAuthModel = UserAuthModel.fromJson(mapData['data']);
 
-      Get.find<Logger>().f("End `register` in |MainRemoteDataSourceImpl|");
+      Get.find<Logger>().w("End `register` in |MainRemoteDataSourceImpl|");
       return Future.value(userAuthModel);
     } catch (e) {
       Get.find<Logger>().e(
@@ -50,7 +50,7 @@ class AuthRemoteDataSourceImpl extends AuthRemoteDataSource {
         data: userModel.toJson(),
       );
       final userAuthModel = UserAuthModel.fromJson(mapData['data']);
-      Get.find<Logger>().f("End `login` in |MainRemoteDataSourceImpl|");
+      Get.find<Logger>().w("End `login` in |MainRemoteDataSourceImpl|");
       return Future.value(userAuthModel);
     } catch (e) {
       Get.find<Logger>().e(
@@ -65,7 +65,7 @@ class AuthRemoteDataSourceImpl extends AuthRemoteDataSource {
     try {
       Get.find<Logger>().i("Start `logout` in |MainRemoteDataSourceImpl|");
       await apiService.get(subUrl: AppApiRoutes.logout);
-      Get.find<Logger>().f("End `logout` in |MainRemoteDataSourceImpl|");
+      Get.find<Logger>().w("End `logout` in |MainRemoteDataSourceImpl|");
       return Future.value(unit);
     } catch (e) {
       Get.find<Logger>().e(

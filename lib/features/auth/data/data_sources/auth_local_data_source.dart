@@ -26,7 +26,7 @@ class AuthLocalDataSourceImpl extends AuthLocalDataSource {
   Future<Unit> setUser({required UserAuthModel userAuthModel}) async {
     Get.find<Logger>().i("Start setUser in AuthLocalDataSourceImpl");
     final isStoreUser = await pref.setString(AppKeys.user, json.encode(userAuthModel.toJson()));
-    Get.find<Logger>().f(
+    Get.find<Logger>().w(
       "End setUser in AuthLocalDataSourceImpl isStoreUser: $isStoreUser",
     );
     return Future.value(unit);
@@ -37,12 +37,12 @@ class AuthLocalDataSourceImpl extends AuthLocalDataSource {
     Get.find<Logger>().i("Start getUser in AuthLocalDataSourceImpl");
     final String? userString = pref.getString(AppKeys.user);
     if (userString != null) {
-      Get.find<Logger>().f(
+      Get.find<Logger>().w(
         "End getUser in AuthLocalDataSourceImpl user: $userString",
       );
       return Future.value(UserAuthModel.fromJson(json.decode(userString)));
     }
-    Get.find<Logger>().f(
+    Get.find<Logger>().w(
       "End getUser in AuthLocalDataSourceImpl user: null",
     );
     return Future.value(null);
@@ -52,7 +52,7 @@ class AuthLocalDataSourceImpl extends AuthLocalDataSource {
   Future<Unit> clear() async {
     Get.find<Logger>().i("Start clear in AuthLocalDataSourceImpl");
     final removeUser = await pref.remove(AppKeys.user);
-    Get.find<Logger>().f(
+    Get.find<Logger>().w(
       "End clear in AuthLocalDataSourceImpl \nremoveUser: $removeUser",
     );
     return Future.value(unit);

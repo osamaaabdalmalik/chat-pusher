@@ -30,7 +30,7 @@ class ChatRemoteDataSourceImpl extends ChatRemoteDataSource {
           )
           .toList();
 
-      Get.find<Logger>().f("End `getCategoriesAsPair` in |MainRemoteDataSourceImpl|");
+      Get.find<Logger>().w("End `getCategoriesAsPair` in |MainRemoteDataSourceImpl|");
       return Future.value(expenses);
     } catch (e) {
       Get.find<Logger>().e(

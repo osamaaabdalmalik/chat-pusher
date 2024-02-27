@@ -21,7 +21,7 @@ class AuthRepoImpl implements AuthRepo {
       Get.find<Logger>().i("Start `register` in |AuthRepoImpl|");
       var userAuthModel = await authRemoteDataSource.register(userModel: user.toModel());
       await authLocalDataSource.setUser(userAuthModel: userAuthModel);
-      Get.find<Logger>().f("End `register` in |AuthRepoImpl|");
+      Get.find<Logger>().w("End `register` in |AuthRepoImpl|");
       return Right(userAuthModel);
     } catch (e) {
       Get.find<Logger>().e("End `register` in |AuthRepoImpl| Exception: ${e.runtimeType}");
@@ -35,7 +35,7 @@ class AuthRepoImpl implements AuthRepo {
       Get.find<Logger>().i("Start `login` in |AuthRepoImpl|");
       var userAuthModel = await authRemoteDataSource.login(userModel: user.toModel());
       await authLocalDataSource.setUser(userAuthModel: userAuthModel);
-      Get.find<Logger>().f("End `login` in |AuthRepoImpl|");
+      Get.find<Logger>().w("End `login` in |AuthRepoImpl|");
       return Right(userAuthModel);
     } catch (e, s) {
       Get.find<Logger>().e("End `login` in |AuthRepoImpl| Exception: ${e.runtimeType} $s");
@@ -48,7 +48,7 @@ class AuthRepoImpl implements AuthRepo {
       Get.find<Logger>().i("Start `logout` in |AuthRepoImpl|");
       await authRemoteDataSource.logout();
       await authLocalDataSource.clear();
-      Get.find<Logger>().f("End `logout` in |AuthRepoImpl|");
+      Get.find<Logger>().w("End `logout` in |AuthRepoImpl|");
       return const Right(unit);
     } catch (e) {
       Get.find<Logger>().e("End `logout` in |AuthRepoImpl| Exception: ${e.runtimeType}");
