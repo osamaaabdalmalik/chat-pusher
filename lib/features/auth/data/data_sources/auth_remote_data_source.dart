@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:pusher/core/constants/app_api_routes.dart';
@@ -9,6 +10,8 @@ abstract class AuthRemoteDataSource {
   Future<UserAuthModel> register({required UserModel userModel});
 
   Future<UserAuthModel> login({required UserModel userModel});
+
+  Future<Unit> logout();
 }
 
 class AuthRemoteDataSourceImpl extends AuthRemoteDataSource {
@@ -52,6 +55,21 @@ class AuthRemoteDataSourceImpl extends AuthRemoteDataSource {
     } catch (e) {
       Get.find<Logger>().e(
         "End `login` in |MainRemoteDataSourceImpl| Exception: ${e.runtimeType}",
+      );
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Unit> logout() async {
+    try {
+      Get.find<Logger>().i("Start `logout` in |MainRemoteDataSourceImpl|");
+      await apiService.get(subUrl: AppApiRoutes.logout);
+      Get.find<Logger>().f("End `logout` in |MainRemoteDataSourceImpl|");
+      return Future.value(unit);
+    } catch (e) {
+      Get.find<Logger>().e(
+        "End `logout` in |MainRemoteDataSourceImpl| Exception: ${e.runtimeType}",
       );
       rethrow;
     }

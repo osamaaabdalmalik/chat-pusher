@@ -42,4 +42,17 @@ class AuthRepoImpl implements AuthRepo {
       return Left(getFailureFromException(e));
     }
   }
+  @override
+  Future<Either<Failure, Unit>> logout() async {
+    try {
+      Get.find<Logger>().i("Start `logout` in |AuthRepoImpl|");
+      await authRemoteDataSource.logout();
+      await authLocalDataSource.clear();
+      Get.find<Logger>().f("End `logout` in |AuthRepoImpl|");
+      return const Right(unit);
+    } catch (e) {
+      Get.find<Logger>().e("End `logout` in |AuthRepoImpl| Exception: ${e.runtimeType}");
+      return Left(getFailureFromException(e));
+    }
+  }
 }
