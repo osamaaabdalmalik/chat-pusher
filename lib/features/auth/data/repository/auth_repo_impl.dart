@@ -28,4 +28,18 @@ class AuthRepoImpl implements AuthRepo {
       return Left(getFailureFromException(e));
     }
   }
+
+  @override
+  Future<Either<Failure, UserAuth>> login({required User user}) async {
+    try {
+      Get.find<Logger>().i("Start `login` in |AuthRepoImpl|");
+      var userAuthModel = await authRemoteDataSource.register(userModel: user.toModel());
+      await authLocalDataSource.setUser(userAuthModel: userAuthModel);
+      Get.find<Logger>().f("End `login` in |AuthRepoImpl|");
+      return Right(userAuthModel);
+    } catch (e) {
+      Get.find<Logger>().e("End `login` in |AuthRepoImpl| Exception: ${e.runtimeType}");
+      return Left(getFailureFromException(e));
+    }
+  }
 }
