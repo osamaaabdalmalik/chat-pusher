@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:pusher/core/constants/app_pages_routes.dart';
 import 'package:pusher/features/auth/presentation/controller/auth_controller.dart';
 
 class AuthScreen extends GetView<AuthController> {
   const AuthScreen({super.key});
+
   Duration get loginTime => const Duration(milliseconds: 2250);
 
   @override
@@ -14,17 +14,16 @@ class AuthScreen extends GetView<AuthController> {
     return FlutterLogin(
       title: 'Chat Pusher',
       logo: const AssetImage('assets/image/chat.png'),
-      onLogin: (p0) {
-        Get.toNamed(AppPagesRoutes.chatScreen);
-        return;
+      onLogin: (loginData) async {
+        await controller.login(loginData: loginData);
+        return controller.validationMessage;
       },
-      onSignup: (p0) {
-        return;
-      },
-      passwordValidator: (value) {
-        return null;
+      onSignup: (signupData) async {
+        await controller.register(signupData: signupData);
+        return controller.validationMessage;
       },
       savedEmail: "osama@gmail.com",
+      savedPassword: '123456789',
       loginProviders: <LoginProvider>[
         LoginProvider(
           icon: FontAwesomeIcons.google,
@@ -68,9 +67,7 @@ class AuthScreen extends GetView<AuthController> {
         ),
       ],
       onSubmitAnimationCompleted: () {
-        // Navigator.of(context).pushReplacement(MaterialPageRoute(
-        //   builder: (context) => const DashboardScreen(),
-        // ));
+        // Get.find<Logger>().f("End");
       },
       onRecoverPassword: (p0) {
         return;

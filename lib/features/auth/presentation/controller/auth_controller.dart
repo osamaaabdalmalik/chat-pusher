@@ -1,3 +1,4 @@
+import 'package:flutter_login/flutter_login.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:pusher/core/constants/app_enums.dart';
@@ -24,30 +25,30 @@ class AuthController extends GetxController {
   void onInit() {
     Get.find<Logger>().i("Start onInit AuthController");
     super.onInit();
-    Get.find<Logger>().f("End onInit AuthController");
+    Get.find<Logger>().w("End onInit AuthController");
   }
 
-  Future<void> register() async {
+  Future<void> register({required SignupData signupData}) async {
     Get.find<Logger>().i("Start `register` in |QuranController|");
     registerState = StateType.loading;
     update();
     RegisterUseCase registerUseCase = RegisterUseCase(Get.find());
     var result = await registerUseCase(
-      user: const User(
+      user: User(
         id: 0,
-        email: 'osamaaabdalmalik@gmail.com',
-        password: '123456789',
+        email: signupData.name!,
+        password: signupData.password!,
       ),
     );
     result.fold(
-      (l) async {
+          (l) async {
         registerState = getStateFromFailure(l);
         validationMessage = l.message;
         update();
         await Future.delayed(const Duration(milliseconds: 50));
         registerState = StateType.init;
       },
-      (r) {
+          (r) {
         registerState = StateType.success;
         userAuth = r;
         update();
@@ -56,33 +57,37 @@ class AuthController extends GetxController {
     Get.find<Logger>().w("End `register` in |QuranController| $registerState");
   }
 
-  Future<void> login() async {
+  Future<bool> login({required LoginData loginData}) async {
     Get.find<Logger>().i("Start `login` in |QuranController|");
     loginState = StateType.loading;
     update();
     LoginUseCase loginUseCase = LoginUseCase(Get.find());
     var result = await loginUseCase(
-      user: const User(
+      user: User(
         id: 0,
-        email: 'osamaaabdalmalik@gmail.com',
-        password: '123456789',
+        email: loginData.name,
+        password: loginData.password,
       ),
     );
-    result.fold(
+    return result.fold(
       (l) async {
         loginState = getStateFromFailure(l);
         validationMessage = l.message;
         update();
         await Future.delayed(const Duration(milliseconds: 50));
         loginState = StateType.init;
+        Get.find<Logger>().w("End `login` in |QuranController| $loginState");
+        return false;
       },
       (r) {
         loginState = StateType.success;
         userAuth = r;
         update();
+        // Get.toNamed(AppPagesRoutes.chatScreen);
+        Get.find<Logger>().w("End `login` in |QuranController| $loginState");
+        return true;
       },
     );
-    Get.find<Logger>().w("End `login` in |QuranController| $loginState");
   }
 
   Future<void> logout() async {
@@ -92,14 +97,14 @@ class AuthController extends GetxController {
     LogoutUseCase logoutUseCase = LogoutUseCase(Get.find());
     var result = await logoutUseCase();
     result.fold(
-      (l) async {
+          (l) async {
         logoutState = getStateFromFailure(l);
         validationMessage = l.message;
         update();
         await Future.delayed(const Duration(milliseconds: 50));
         logoutState = StateType.init;
       },
-      (r) {
+          (r) {
         logoutState = StateType.success;
         userAuth = null;
         update();
