@@ -2,7 +2,9 @@ import 'package:flutter_login/flutter_login.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:pusher/core/constants/app_enums.dart';
+import 'package:pusher/core/constants/app_pages_routes.dart';
 import 'package:pusher/core/helpers/get_state_from_failure.dart';
+import 'package:pusher/core/services/easy_loader_service.dart';
 import 'package:pusher/features/auth/domain/entities/user_auth_entity.dart';
 import 'package:pusher/features/auth/domain/entities/user_entity.dart';
 import 'package:pusher/features/auth/domain/usecases/login_use_case.dart';
@@ -28,7 +30,7 @@ class AuthController extends GetxController {
     Get.find<Logger>().w("End onInit AuthController");
   }
 
-  Future<void> register({required SignupData signupData}) async {
+  Future<bool> register({required SignupData signupData}) async {
     Get.find<Logger>().i("Start `register` in |QuranController|");
     registerState = StateType.loading;
     update();
@@ -40,21 +42,25 @@ class AuthController extends GetxController {
         password: signupData.password!,
       ),
     );
-    result.fold(
-          (l) async {
+    return result.fold(
+      (l) async {
         registerState = getStateFromFailure(l);
         validationMessage = l.message;
         update();
         await Future.delayed(const Duration(milliseconds: 50));
         registerState = StateType.init;
+        Get.find<Logger>().w("End `register` in |QuranController| $registerState");
+        return false;
       },
-          (r) {
+      (r) {
         registerState = StateType.success;
         userAuth = r;
         update();
+        Get.offNamed(AppPagesRoutes.chatsScreen);
+        Get.find<Logger>().w("End `register` in |QuranController| $registerState");
+        return true;
       },
     );
-    Get.find<Logger>().w("End `register` in |QuranController| $registerState");
   }
 
   Future<bool> login({required LoginData loginData}) async {
@@ -83,33 +89,39 @@ class AuthController extends GetxController {
         loginState = StateType.success;
         userAuth = r;
         update();
-        // Get.toNamed(AppPagesRoutes.chatScreen);
+        Get.offNamed(AppPagesRoutes.chatsScreen);
         Get.find<Logger>().w("End `login` in |QuranController| $loginState");
         return true;
       },
     );
   }
 
-  Future<void> logout() async {
+  Future<bool> logout() async {
     Get.find<Logger>().i("Start `logout` in |QuranController|");
     logoutState = StateType.loading;
     update();
+    EasyLoaderService.showLoading();
     LogoutUseCase logoutUseCase = LogoutUseCase(Get.find());
     var result = await logoutUseCase();
-    result.fold(
-          (l) async {
+    return result.fold(
+      (l) async {
         logoutState = getStateFromFailure(l);
         validationMessage = l.message;
         update();
         await Future.delayed(const Duration(milliseconds: 50));
         logoutState = StateType.init;
+        EasyLoaderService.showError(message: validationMessage);
+        Get.find<Logger>().w("End `logout` in |QuranController| $logoutState");
+        return false;
       },
-          (r) {
+      (r) {
         logoutState = StateType.success;
         userAuth = null;
         update();
+        EasyLoaderService.dismiss();
+        Get.find<Logger>().w("End `logout` in |QuranController| $logoutState");
+        return true;
       },
     );
-    Get.find<Logger>().w("End `logout` in |QuranController| $logoutState");
   }
 }

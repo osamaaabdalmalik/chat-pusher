@@ -15,11 +15,15 @@ class AuthScreen extends GetView<AuthController> {
       title: 'Chat Pusher',
       logo: const AssetImage('assets/image/chat.png'),
       onLogin: (loginData) async {
-        await controller.login(loginData: loginData);
+        if (await controller.login(loginData: loginData)) {
+          return null;
+        }
         return controller.validationMessage;
       },
       onSignup: (signupData) async {
-        await controller.register(signupData: signupData);
+        if (await controller.register(signupData: signupData)) {
+          return null;
+        }
         return controller.validationMessage;
       },
       savedEmail: "osama@gmail.com",
