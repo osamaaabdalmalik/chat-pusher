@@ -12,7 +12,7 @@ class UserModel extends User {
     return UserModel(
       id: json['id'],
       email: json['email'],
-      password: json.containsKey("json") ? json['password'] : '',
+      password: json.containsKey("password") ? json['password'] : '',
       username: json['username'],
     );
   }
