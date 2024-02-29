@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pusher/core/constants/app_colors.dart';
-import 'package:pusher/core/constants/app_pages_routes.dart';
 import 'package:pusher/core/widgets/handle_states_widget.dart';
 import 'package:pusher/features/auth/presentation/controller/auth_controller.dart';
 import 'package:pusher/features/chat/presentation/controller/chat_controller.dart';
@@ -57,9 +56,8 @@ class ChatsScreen extends GetView<ChatController> {
                   ),
                 ],
               ),
-              onTap: () {
-                controller.currentChat = controller.chats[index];
-                Get.toNamed(AppPagesRoutes.chatScreen);
+              onTap: () async {
+                await controller.getMessages(index: index);
               },
             ),
           ),

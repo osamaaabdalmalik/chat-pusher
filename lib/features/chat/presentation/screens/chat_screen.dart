@@ -12,29 +12,30 @@ class ChatScreen extends GetView<ChatController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Basic example'),
+        title: Text(controller.currentChat!.name),
       ),
       body: GetBuilder<ChatController>(
         builder: (controller) => DashChat(
-          currentUser: controller.user,
-          onSend: (ChatMessage m) {
-            controller.messages.insert(0, m);
-            controller.update();
+          currentUser: ChatUser(
+            id: controller.userAuth!.user.id.toString(),
+            firstName: controller.userAuth!.user.username,
+          ),
+          onSend: (ChatMessage m) async {
+            await controller.createMessage(chatMessage: m);
           },
-          messages: controller.messages,
-          typingUsers: [controller.user],
+          messages: controller.chatMessages,
+          typingUsers: [controller.anotherUserChat],
           quickReplyOptions: QuickReplyOptions(
             onTapQuickReply: (QuickReply r) {
               final ChatMessage m = ChatMessage(
-                user: controller.user,
+                user: controller.anotherUserChat,
                 text: r.value ?? r.title,
                 createdAt: DateTime.now(),
               );
-              controller.messages.insert(0, m);
+              controller.chatMessages.insert(0, m);
               controller.update();
             },
           ),
-
           inputOptions: const InputOptions(
             sendOnEnter: true,
           ),

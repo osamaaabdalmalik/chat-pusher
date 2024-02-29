@@ -7,44 +7,32 @@ import 'package:pusher/core/constants/app_pages_routes.dart';
 import 'package:pusher/core/helpers/get_state_from_failure.dart';
 import 'package:pusher/features/auth/domain/entities/user_auth_entity.dart';
 import 'package:pusher/features/chat/domain/entities/chat_entity.dart';
+import 'package:pusher/features/chat/domain/entities/message_entity.dart';
 import 'package:pusher/features/chat/domain/usecases/create_chat_use_case.dart';
+import 'package:pusher/features/chat/domain/usecases/create_message_use_case.dart';
 import 'package:pusher/features/chat/domain/usecases/get_chats_use_case.dart';
+import 'package:pusher/features/chat/domain/usecases/get_messages_use_case.dart';
 
 class ChatController extends GetxController {
   // Data
   UserAuth? userAuth;
   Chat? currentChat;
+  Message? currentMessage;
   List<Chat> chats = [];
+  List<ChatMessage> chatMessages = [];
 
-  ChatUser user = ChatUser(
+  // TODO Change
+  ChatUser anotherUserChat = ChatUser(
     id: '2',
-    firstName: 'Charles',
-    lastName: 'Leclerc',
+    firstName: 'Ammar',
+    lastName: 'Al Alset',
   );
-  List<ChatMessage> messages = <ChatMessage>[
-    ChatMessage(
-      text: 'Hey!',
-      user: ChatUser(
-        id: '1',
-        firstName: 'Charles',
-        lastName: 'Leclerc',
-      ),
-      createdAt: DateTime.now(),
-    ),
-    ChatMessage(
-      text: 'Hey!',
-      user: ChatUser(
-        id: '2',
-        firstName: 'Charles 2',
-        lastName: 'Leclerc',
-      ),
-      createdAt: DateTime.now(),
-    ),
-  ];
 
   // States
   StateType createChatState = StateType.init;
   StateType getChatsState = StateType.init;
+  StateType getMessagesState = StateType.init;
+  StateType createMessageState = StateType.init;
 
   // Primitive
   String validationMessage = '';
@@ -78,7 +66,7 @@ class ChatController extends GetxController {
         getChatsState = StateType.success;
         chats = r;
         update();
-        Get.find<Logger>().w("End `getChats` in |ChatController| ${chats.length}");
+        Get.find<Logger>().w("End `getChats` in |ChatController| $getChatsState");
         return true;
       },
     );
@@ -106,6 +94,88 @@ class ChatController extends GetxController {
         update();
         Get.toNamed(AppPagesRoutes.chatScreen);
         Get.find<Logger>().w("End `createChat` in |ChatController| $createChatState");
+        return true;
+      },
+    );
+  }
+
+  Future<bool> getMessages({required int index}) async {
+    Get.find<Logger>().i("Start `getMessages` in |ChatController|");
+    currentChat = chats[index];
+    getMessagesState = StateType.loading;
+    update();
+    GetMessagesUseCase getMessagesUseCase = GetMessagesUseCase(Get.find());
+    var result = await getMessagesUseCase(
+      chatId: currentChat!.id,
+      page: 1,
+    );
+    return result.fold(
+      (l) async {
+        getMessagesState = getStateFromFailure(l);
+        validationMessage = l.message;
+        update();
+        await Future.delayed(const Duration(milliseconds: 50));
+        getMessagesState = StateType.init;
+        Get.find<Logger>().w("End `getMessages` in |ChatController| $getMessagesState");
+        return false;
+      },
+      (r) {
+        getMessagesState = StateType.success;
+        for (var message in r) {
+          chatMessages.add(
+            ChatMessage(
+              text: message.content,
+              user: ChatUser(
+                id: message.user.id.toString(),
+                firstName: message.user.username,
+              ),
+              createdAt: DateTime.parse(message.createdAt),
+            ),
+          );
+        }
+        update();
+        Get.toNamed(AppPagesRoutes.chatScreen);
+        Get.find<Logger>().w("End `getMessages` in |ChatController| $getMessagesState");
+        return true;
+      },
+    );
+  }
+
+  Future<bool> createMessage({required ChatMessage chatMessage}) async {
+    Get.find<Logger>().i("Start `createMessage` in |ChatController|");
+    createMessageState = StateType.loading;
+    update();
+    CreateMessageUseCase createMessageUseCase = CreateMessageUseCase(Get.find());
+    var result = await createMessageUseCase(
+      chatId: currentChat!.id,
+      messageContent: chatMessage.text,
+    );
+    return result.fold(
+      (l) async {
+        createMessageState = getStateFromFailure(l);
+        validationMessage = l.message;
+        update();
+        await Future.delayed(const Duration(milliseconds: 50));
+        createMessageState = StateType.init;
+        Get.find<Logger>().w("End `createMessage` in |ChatController| $createMessageState");
+        return false;
+      },
+      (r) {
+        createMessageState = StateType.success;
+        currentMessage = r;
+        update();
+        chatMessages.insert(
+          0,
+          ChatMessage(
+            text: currentMessage!.content,
+            user: ChatUser(
+              id: currentMessage!.user.id.toString(),
+              firstName: currentMessage!.user.username,
+            ),
+            createdAt: DateTime.parse(currentMessage!.createdAt),
+          ),
+        );
+        Get.find<Logger>().w("End `createMessage` in |ChatController| $createMessageState");
         return true;
       },
     );
