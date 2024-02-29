@@ -19,21 +19,21 @@ class ChatRepoImpl implements ChatRepo {
       var chats = await chatRemoteDataSource.getChats();
       Get.find<Logger>().w("End `getChats` in |ChatRepoImpl|");
       return Right(chats);
-    } catch (e) {
-      Get.find<Logger>().e("End `getChats` in |ChatRepoImpl| Exception: ${e.runtimeType}");
+    } catch (e, s) {
+      Get.find<Logger>().e("End `getChats` in |ChatRepoImpl| Exception: ${e.runtimeType} $s");
       return Left(getFailureFromException(e));
     }
   }
 
   @override
-  Future<Either<Failure, Unit>> createChat({required int userId}) async {
+  Future<Either<Failure, Chat>> createChat({required int userId}) async {
     try {
       Get.find<Logger>().i("Start `createChat` in |ChatRepoImpl|");
-      await chatRemoteDataSource.createChat(userId: userId);
+      var chat = await chatRemoteDataSource.createChat(userId: userId);
       Get.find<Logger>().w("End `createChat` in |ChatRepoImpl|");
-      return const Right(unit);
-    } catch (e) {
-      Get.find<Logger>().e("End `createChat` in |ChatRepoImpl| Exception: ${e.runtimeType}");
+      return Right(chat);
+    } catch (e, s) {
+      Get.find<Logger>().e("End `createChat` in |ChatRepoImpl| Exception: ${e.runtimeType} $s");
       return Left(getFailureFromException(e));
     }
   }

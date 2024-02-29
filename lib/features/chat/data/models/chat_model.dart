@@ -11,9 +11,9 @@ class ChatModel extends Chat {
   factory ChatModel.fromJson(Map<String, dynamic> json) {
     return ChatModel(
       id: json['id'],
-      name: json['last_message']['user']['username'],
-      lastMessage: json['last_message']['message'],
-      messageCreatedAt: json['last_message']['created_at'],
+      name: json['participants'][0]['user']['username'],
+      lastMessage: json['last_message'] != null ? json['last_message']['message'] : "",
+      messageCreatedAt: json['created_at'],
     );
   }
 }

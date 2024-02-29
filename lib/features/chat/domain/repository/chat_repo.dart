@@ -5,5 +5,5 @@ import 'package:pusher/features/chat/domain/entities/chat_entity.dart';
 abstract class ChatRepo {
   Future<Either<Failure, List<Chat>>> getChats();
 
-  Future<Either<Failure, Unit>> createChat({required int userId});
+  Future<Either<Failure, Chat>> createChat({required int userId});
 }
