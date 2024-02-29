@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pusher/core/constants/app_colors.dart';
+import 'package:pusher/core/constants/app_pages_routes.dart';
+import 'package:pusher/core/widgets/handle_states_widget.dart';
 import 'package:pusher/features/auth/presentation/controller/auth_controller.dart';
 import 'package:pusher/features/chat/presentation/controller/chat_controller.dart';
 
@@ -27,33 +29,38 @@ class ChatsScreen extends GetView<ChatController> {
         ],
       ),
       body: GetBuilder<ChatController>(
-        builder: (controller) => Center(
+        builder: (controller) => HandleStatesWidget(
+          stateType: controller.getChatsState,
+          validationMessage: controller.validationMessage,
           child: ListView.builder(
-            itemCount: 20,
+            itemCount: controller.chats.length,
             itemBuilder: (context, index) => ListTile(
               leading: const Icon(
                 Icons.account_circle,
                 size: 50.0,
                 color: AppColors.gray,
               ),
-              title: const Text("Name"),
-              subtitle: const Row(
+              title: Text(controller.chats[index].name),
+              subtitle: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
                     child: Text(
-                      "lastMessage.message",
+                      controller.chats[index].lastMessage,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),
                   ),
                   Text(
-                    '20-2-2023',
-                    style: TextStyle(color: AppColors.gray),
+                    controller.chats[index].messageCreatedAt.substring(0, 9),
+                    style: const TextStyle(color: AppColors.gray),
                   ),
                 ],
               ),
-              onTap: () {},
+              onTap: () {
+                controller.currentChat = controller.chats[index];
+                Get.toNamed(AppPagesRoutes.chatScreen);
+              },
             ),
           ),
         ),
