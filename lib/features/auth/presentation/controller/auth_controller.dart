@@ -6,8 +6,12 @@ import 'package:pusher/core/constants/app_keys.dart';
 import 'package:pusher/core/constants/app_pages_routes.dart';
 import 'package:pusher/core/helpers/get_state_from_failure.dart';
 import 'package:pusher/core/services/easy_loader_service.dart';
+import 'package:pusher/features/auth/data/data_sources/auth_local_data_source.dart';
+import 'package:pusher/features/auth/data/data_sources/auth_remote_data_source.dart';
+import 'package:pusher/features/auth/data/repository/auth_repo_impl.dart';
 import 'package:pusher/features/auth/domain/entities/user_auth_entity.dart';
 import 'package:pusher/features/auth/domain/entities/user_entity.dart';
+import 'package:pusher/features/auth/domain/repository/auth_repo.dart';
 import 'package:pusher/features/auth/domain/usecases/login_use_case.dart';
 import 'package:pusher/features/auth/domain/usecases/logout_use_case.dart';
 import 'package:pusher/features/auth/domain/usecases/register_use_case.dart';
@@ -102,6 +106,18 @@ class AuthController extends GetxController {
     logoutState = StateType.loading;
     update();
     EasyLoaderService.showLoading();
+    Get.put<AuthRemoteDataSource>(
+      AuthRemoteDataSourceImpl(apiService: Get.find()),
+    );
+    Get.put<AuthLocalDataSource>(
+      AuthLocalDataSourceImpl(sharedPreferencesService: Get.find()),
+    );
+    Get.put<AuthRepo>(
+      AuthRepoImpl(
+        authRemoteDataSource: Get.find(),
+        authLocalDataSource: Get.find(),
+      ),
+    );
     LogoutUseCase logoutUseCase = LogoutUseCase(Get.find());
     var result = await logoutUseCase();
     return result.fold(
@@ -120,6 +136,7 @@ class AuthController extends GetxController {
         userAuth = null;
         update();
         EasyLoaderService.dismiss();
+        Get.offAllNamed(AppPagesRoutes.authScreen);
         Get.find<Logger>().w("End `logout` in |QuranController| $logoutState");
         return true;
       },

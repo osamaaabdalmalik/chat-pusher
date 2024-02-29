@@ -121,6 +121,7 @@ class ChatController extends GetxController {
       },
       (r) {
         getMessagesState = StateType.success;
+        chatMessages.clear();
         for (var message in r) {
           chatMessages.add(
             ChatMessage(
