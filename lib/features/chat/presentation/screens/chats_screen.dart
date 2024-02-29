@@ -59,7 +59,9 @@ class ChatsScreen extends GetView<ChatController> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () async {
+          await controller.createChat();
+        },
         child: const Icon(Icons.add_comment_rounded),
       ),
     );
