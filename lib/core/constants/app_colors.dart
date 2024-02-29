@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  static const MaterialColor materialPrimary = MaterialColor(0xFF2196F3, {
-    50: Color(0xFFDFEDF9),
-    100: Color(0xFFD2F4FE),
-    200: Color(0xFFA6E5FD),
-    300: Color(0xFF79D0FB),
-    400: Color(0xFF57B9F7),
-    500: Color(0xFF2196F3),
-    600: Color(0xFF1874D0),
-    700: Color(0xFF1057AE),
-    800: Color(0xFF0A3D8C),
-    900: Color(0xFF062B74),
-  });
+  // static const MaterialColor materialPrimary = MaterialColor(0xFF2196F3, {
+  // 50: Color(0xFFDFEDF9),
+  // 100: Color(0xFFD2F4FE),
+  // 200: Color(0xFFA6E5FD),
+  // 300: Color(0xFF79D0FB),
+  // 400: Color(0xFF57B9F7),
+  // 500: Color(0xFF2196F3),
+  // 600: Color(0xFF1874D0),
+  // 700: Color(0xFF1057AE),
+  // 800: Color(0xFF0A3D8C),
+  // 900: Color(0xFF062B74),
+  // });
+
+  static const MaterialColor materialPrimary = Colors.cyan;
 
   static const Color primary = Color(0xFF2196F3);
   static const Color primary10 = Color(0xFFA6E5FD);

@@ -4,8 +4,8 @@ import 'package:logger/logger.dart';
 import 'package:pusher/core/errors/failures.dart';
 import 'package:pusher/core/helpers/get_failure_from_exception.dart';
 import 'package:pusher/features/chat/data/data_sources/chat_remote_data_source.dart';
+import 'package:pusher/features/chat/domain/entities/chat_entity.dart';
 import 'package:pusher/features/chat/domain/repository/chat_repo.dart';
-import 'package:pusher/features/main/domain/entities/pair_entity.dart';
 
 class ChatRepoImpl implements ChatRepo {
   final ChatRemoteDataSource chatRemoteDataSource;
@@ -13,14 +13,27 @@ class ChatRepoImpl implements ChatRepo {
   const ChatRepoImpl({required this.chatRemoteDataSource});
 
   @override
-  Future<Either<Failure, List<Pair>>> getCategoriesAsPair({required int repositoryId}) async {
+  Future<Either<Failure, List<Chat>>> getChats() async {
     try {
-      Get.find<Logger>().i("Start `getCategoriesAsPair` in |ChatRepoImpl|");
-      var pairModels = await chatRemoteDataSource.getCategoriesAsPair(repositoryId: repositoryId);
-      Get.find<Logger>().w("End `getCategoriesAsPair` in |ChatRepoImpl|");
-      return Right(pairModels);
+      Get.find<Logger>().i("Start `getChats` in |ChatRepoImpl|");
+      var chats = await chatRemoteDataSource.getChats();
+      Get.find<Logger>().w("End `getChats` in |ChatRepoImpl|");
+      return Right(chats);
     } catch (e) {
-      Get.find<Logger>().e("End `getCategoriesAsPair` in |ChatRepoImpl| Exception: ${e.runtimeType}");
+      Get.find<Logger>().e("End `getChats` in |ChatRepoImpl| Exception: ${e.runtimeType}");
+      return Left(getFailureFromException(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, Unit>> createChat({required int userId}) async {
+    try {
+      Get.find<Logger>().i("Start `createChat` in |ChatRepoImpl|");
+      await chatRemoteDataSource.createChat(userId: userId);
+      Get.find<Logger>().w("End `createChat` in |ChatRepoImpl|");
+      return const Right(unit);
+    } catch (e) {
+      Get.find<Logger>().e("End `createChat` in |ChatRepoImpl| Exception: ${e.runtimeType}");
       return Left(getFailureFromException(e));
     }
   }
