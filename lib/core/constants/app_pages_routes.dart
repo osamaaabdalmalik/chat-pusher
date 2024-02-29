@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:pusher/core/middleware/main_middleware.dart';
 import 'package:pusher/features/auth/auth_bindings.dart';
 import 'package:pusher/features/auth/presentation/screens/auth_screen.dart';
 import 'package:pusher/features/chat/chat_bindings.dart';
@@ -25,6 +26,7 @@ abstract class AppPagesRoutes {
       name: authScreen,
       page: () => const AuthScreen(),
       binding: AuthBindings(),
+      middlewares: [MainMiddleware()],
       transition: Transition.leftToRight,
     ),
     GetPage(

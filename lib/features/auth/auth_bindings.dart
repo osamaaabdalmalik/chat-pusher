@@ -12,7 +12,7 @@ class AuthBindings extends Bindings {
       AuthRemoteDataSourceImpl(apiService: Get.find()),
     );
     Get.put<AuthLocalDataSource>(
-      AuthLocalDataSourceImpl(pref: Get.find()),
+      AuthLocalDataSourceImpl(sharedPreferencesService: Get.find()),
     );
     Get.put<AuthRepo>(
       AuthRepoImpl(

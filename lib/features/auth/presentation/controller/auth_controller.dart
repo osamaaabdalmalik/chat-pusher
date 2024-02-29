@@ -2,6 +2,7 @@ import 'package:flutter_login/flutter_login.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:pusher/core/constants/app_enums.dart';
+import 'package:pusher/core/constants/app_keys.dart';
 import 'package:pusher/core/constants/app_pages_routes.dart';
 import 'package:pusher/core/helpers/get_state_from_failure.dart';
 import 'package:pusher/core/services/easy_loader_service.dart';
@@ -24,7 +25,7 @@ class AuthController extends GetxController {
   String validationMessage = '';
 
   @override
-  void onInit() {
+  void onInit() async {
     Get.find<Logger>().i("Start onInit AuthController");
     super.onInit();
     Get.find<Logger>().w("End onInit AuthController");
@@ -56,7 +57,7 @@ class AuthController extends GetxController {
         registerState = StateType.success;
         userAuth = r;
         update();
-        Get.offNamed(AppPagesRoutes.chatsScreen);
+        Get.offNamed(AppPagesRoutes.chatsScreen, arguments: {AppKeys.user: r});
         Get.find<Logger>().w("End `register` in |QuranController| $registerState");
         return true;
       },
@@ -89,7 +90,7 @@ class AuthController extends GetxController {
         loginState = StateType.success;
         userAuth = r;
         update();
-        Get.offNamed(AppPagesRoutes.chatsScreen);
+        Get.offNamed(AppPagesRoutes.chatsScreen, arguments: {AppKeys.user: r});
         Get.find<Logger>().w("End `login` in |QuranController| $loginState");
         return true;
       },

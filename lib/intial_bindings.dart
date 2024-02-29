@@ -5,12 +5,14 @@ import 'package:logger/logger.dart';
 import 'package:pusher/core/helpers/network_info.dart';
 import 'package:pusher/core/services/api_service.dart';
 import 'package:pusher/core/services/easy_loader_service.dart';
+import 'package:pusher/core/services/shared_preferences_service.dart';
 
 class InitialBindings extends Bindings {
   @override
   dependencies() async {
     Get.put(Logger());
     Get.put(EasyLoaderService());
+    Get.put(SharedPreferencesService(pref: Get.find()));
     Get.put(InternetConnectionChecker());
     Get.put<NetworkInfo>(NetworkInfoImpl(Get.find()));
     Get.put(ApiService(
