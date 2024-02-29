@@ -23,8 +23,8 @@ class AuthRepoImpl implements AuthRepo {
       await authLocalDataSource.setUser(userAuthModel: userAuthModel);
       Get.find<Logger>().w("End `register` in |AuthRepoImpl|");
       return Right(userAuthModel);
-    } catch (e) {
-      Get.find<Logger>().e("End `register` in |AuthRepoImpl| Exception: ${e.runtimeType}");
+    } catch (e, s) {
+      Get.find<Logger>().e("End `register` in |AuthRepoImpl| Exception: ${e.runtimeType} $s");
       return Left(getFailureFromException(e));
     }
   }
@@ -51,8 +51,8 @@ class AuthRepoImpl implements AuthRepo {
       await authLocalDataSource.clear();
       Get.find<Logger>().w("End `logout` in |AuthRepoImpl|");
       return const Right(unit);
-    } catch (e) {
-      Get.find<Logger>().e("End `logout` in |AuthRepoImpl| Exception: ${e.runtimeType}");
+    } catch (e, s) {
+      Get.find<Logger>().e("End `logout` in |AuthRepoImpl| Exception: ${e.runtimeType} $s");
       return Left(getFailureFromException(e));
     }
   }
@@ -64,8 +64,8 @@ class AuthRepoImpl implements AuthRepo {
       var userAuth = await authLocalDataSource.getUser();
       Get.find<Logger>().w("End `getUser` in |AuthRepoImpl|");
       return Right(userAuth);
-    } catch (e) {
-      Get.find<Logger>().e("End `getUser` in |AuthRepoImpl| Exception: ${e.runtimeType}");
+    } catch (e, s) {
+      Get.find<Logger>().e("End `getUser` in |AuthRepoImpl| Exception: ${e.runtimeType} $s");
       return Left(getFailureFromException(e));
     }
   }

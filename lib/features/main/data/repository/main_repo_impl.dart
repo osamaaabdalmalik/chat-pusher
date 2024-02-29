@@ -19,8 +19,8 @@ class MainRepoImpl implements MainRepo {
       var pairModels = await mainRemoteDataSource.getCategoriesAsPair(repositoryId: repositoryId);
       Get.find<Logger>().w("End `getCategoriesAsPair` in |MainRepoImpl|");
       return Right(pairModels);
-    } catch (e) {
-      Get.find<Logger>().e("End `getCategoriesAsPair` in |MainRepoImpl| Exception: ${e.runtimeType}");
+    } catch (e, s) {
+      Get.find<Logger>().e("End `getCategoriesAsPair` in |MainRepoImpl| Exception: ${e.runtimeType} $s");
       return Left(getFailureFromException(e));
     }
   }

@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:pusher/core/errors/exception.dart';
 import 'package:dartz/dartz.dart';
 import 'package:http/http.dart';
+import 'package:pusher/core/errors/exception.dart';
 
 Unit getExceptionStatusCode(Response response) {
   switch (response.statusCode) {
@@ -10,6 +10,7 @@ Unit getExceptionStatusCode(Response response) {
     case 201:
       return unit;
     case 400:
+    case 422:
       throw BadRequestException(message: json.decode(response.body)['message']);
     case 403:
       throw UnAuthorizedException();

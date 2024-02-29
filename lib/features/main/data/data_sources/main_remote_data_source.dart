@@ -32,9 +32,9 @@ class MainRemoteDataSourceImpl extends MainRemoteDataSource {
 
       Get.find<Logger>().w("End `getCategoriesAsPair` in |MainRemoteDataSourceImpl|");
       return Future.value(expenses);
-    } catch (e) {
+    } catch (e, s) {
       Get.find<Logger>().e(
-        "End `getCategoriesAsPair` in |MainRemoteDataSourceImpl| Exception: ${e.runtimeType}",
+        "End `getCategoriesAsPair` in |MainRemoteDataSourceImpl| Exception: ${e.runtimeType} $s",
       );
       rethrow;
     }

@@ -32,9 +32,9 @@ class AuthRemoteDataSourceImpl extends AuthRemoteDataSource {
 
       Get.find<Logger>().w("End `register` in |MainRemoteDataSourceImpl|");
       return Future.value(userAuthModel);
-    } catch (e) {
+    } catch (e, s) {
       Get.find<Logger>().e(
-        "End `register` in |MainRemoteDataSourceImpl| Exception: ${e.runtimeType}",
+        "End `register` in |MainRemoteDataSourceImpl| Exception: ${e.runtimeType} $s",
       );
       rethrow;
     }
@@ -52,9 +52,9 @@ class AuthRemoteDataSourceImpl extends AuthRemoteDataSource {
       final userAuthModel = UserAuthModel.fromJson(mapData['data']);
       Get.find<Logger>().w("End `login` in |MainRemoteDataSourceImpl|");
       return Future.value(userAuthModel);
-    } catch (e) {
+    } catch (e, s) {
       Get.find<Logger>().e(
-        "End `login` in |MainRemoteDataSourceImpl| Exception: ${e.runtimeType}",
+        "End `login` in |MainRemoteDataSourceImpl| Exception: ${e.runtimeType} $s",
       );
       rethrow;
     }
@@ -70,9 +70,9 @@ class AuthRemoteDataSourceImpl extends AuthRemoteDataSource {
       );
       Get.find<Logger>().w("End `logout` in |MainRemoteDataSourceImpl|");
       return Future.value(unit);
-    } catch (e) {
+    } catch (e, s) {
       Get.find<Logger>().e(
-        "End `logout` in |MainRemoteDataSourceImpl| Exception: ${e.runtimeType}",
+        "End `logout` in |MainRemoteDataSourceImpl| Exception: ${e.runtimeType} $s",
       );
       rethrow;
     }
