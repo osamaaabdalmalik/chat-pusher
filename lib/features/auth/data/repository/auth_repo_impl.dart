@@ -42,6 +42,7 @@ class AuthRepoImpl implements AuthRepo {
       return Left(getFailureFromException(e));
     }
   }
+
   @override
   Future<Either<Failure, Unit>> logout() async {
     try {
@@ -52,6 +53,19 @@ class AuthRepoImpl implements AuthRepo {
       return const Right(unit);
     } catch (e) {
       Get.find<Logger>().e("End `logout` in |AuthRepoImpl| Exception: ${e.runtimeType}");
+      return Left(getFailureFromException(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserAuth?>> getUser() async {
+    try {
+      Get.find<Logger>().i("Start `getUser` in |AuthRepoImpl|");
+      var userAuth = await authLocalDataSource.getUser();
+      Get.find<Logger>().w("End `getUser` in |AuthRepoImpl|");
+      return Right(userAuth);
+    } catch (e) {
+      Get.find<Logger>().e("End `getUser` in |AuthRepoImpl| Exception: ${e.runtimeType}");
       return Left(getFailureFromException(e));
     }
   }

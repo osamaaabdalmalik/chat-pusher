@@ -9,4 +9,6 @@ abstract class AuthRepo {
   Future<Either<Failure, UserAuth>> login({required User user});
 
   Future<Either<Failure, Unit>> logout();
+
+  Future<Either<Failure, UserAuth?>> getUser();
 }
