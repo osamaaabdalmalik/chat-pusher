@@ -8,4 +8,6 @@ abstract class AppApiRoutes {
 
   static const String getChats = "/chat";
   static const String createChat = "/chat";
+  static const String getMessages = "/chat_message";
+  static const String createMessage = "/chat_message";
 }
