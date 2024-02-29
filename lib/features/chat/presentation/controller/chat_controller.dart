@@ -55,7 +55,7 @@ class ChatController extends GetxController {
     super.onInit();
     userAuth = Get.arguments[AppKeys.user];
     await getChats();
-    Get.find<Logger>().w("End onInit |ChatController| ${userAuth?.user.username}");
+    Get.find<Logger>().w("End onInit |ChatController|");
   }
 
   Future<bool> getChats() async {

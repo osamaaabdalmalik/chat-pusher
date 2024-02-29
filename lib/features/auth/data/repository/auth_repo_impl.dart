@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:pusher/core/errors/failures.dart';
 import 'package:pusher/core/helpers/get_failure_from_exception.dart';
+import 'package:pusher/core/services/api_service.dart';
 import 'package:pusher/features/auth/data/data_sources/auth_local_data_source.dart';
 import 'package:pusher/features/auth/data/data_sources/auth_remote_data_source.dart';
 import 'package:pusher/features/auth/domain/entities/user_auth_entity.dart';
@@ -22,6 +23,7 @@ class AuthRepoImpl implements AuthRepo {
       var userAuthModel = await authRemoteDataSource.register(userModel: user.toModel());
       await authLocalDataSource.setUser(userAuthModel: userAuthModel);
       Get.find<Logger>().w("End `register` in |AuthRepoImpl|");
+      Get.find<ApiService>().getUserAuth();
       return Right(userAuthModel);
     } catch (e, s) {
       Get.find<Logger>().e("End `register` in |AuthRepoImpl| Exception: ${e.runtimeType} $s");
@@ -35,6 +37,7 @@ class AuthRepoImpl implements AuthRepo {
       Get.find<Logger>().i("Start `login` in |AuthRepoImpl|");
       var userAuthModel = await authRemoteDataSource.login(userModel: user.toModel());
       await authLocalDataSource.setUser(userAuthModel: userAuthModel);
+      Get.find<ApiService>().getUserAuth();
       Get.find<Logger>().w("End `login` in |AuthRepoImpl|");
       return Right(userAuthModel);
     } catch (e, s) {
@@ -49,6 +52,7 @@ class AuthRepoImpl implements AuthRepo {
       Get.find<Logger>().i("Start `logout` in |AuthRepoImpl|");
       await authRemoteDataSource.logout();
       await authLocalDataSource.clear();
+      Get.find<ApiService>().getUserAuth();
       Get.find<Logger>().w("End `logout` in |AuthRepoImpl|");
       return const Right(unit);
     } catch (e, s) {

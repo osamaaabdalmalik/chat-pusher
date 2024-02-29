@@ -52,7 +52,7 @@ class ChatsScreen extends GetView<ChatController> {
                     ),
                   ),
                   Text(
-                    controller.chats[index].messageCreatedAt.substring(0, 9),
+                    controller.chats[index].messageCreatedAt.substring(0, 10),
                     style: const TextStyle(color: AppColors.gray),
                   ),
                 ],
