@@ -4,13 +4,18 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 import 'package:pusher/core/constants/app_api_routes.dart';
+import 'package:pusher/core/constants/app_keys.dart';
 import 'package:pusher/core/helpers/get_exception_from_status_code.dart';
 import 'package:pusher/core/helpers/header.dart';
 import 'package:pusher/core/helpers/network_info.dart';
+import 'package:pusher/core/services/shared_preferences_service.dart';
+import 'package:pusher/features/auth/data/models/user_auth_model.dart';
+import 'package:pusher/features/auth/domain/entities/user_auth_entity.dart';
 
 class ApiService extends GetxService {
   final http.Client client;
   final NetworkInfo networkInfo;
+  UserAuth? userAuth;
 
   ApiService({
     required this.client,
@@ -19,9 +24,21 @@ class ApiService extends GetxService {
 
   @override
   void onInit() {
-    Get.find<Logger>().i('Start onInit in ApiServiceImpl');
-    Get.find<Logger>().w('End onInit in ApiServiceImpl');
+    Get.find<Logger>().i('Start `onInit` in ApiServiceImpl');
+    getUserAuth();
+    Get.find<Logger>().w('End `onInit` in ApiServiceImpl');
     super.onInit();
+  }
+
+  void getUserAuth() {
+    Get.find<Logger>().i('Start `getUserAuth` in ApiServiceImpl');
+    String? user = Get.find<SharedPreferencesService>().getData<String>(
+      key: AppKeys.user,
+    );
+    if (user != null) {
+      userAuth = UserAuthModel.fromJson(json.decode(user));
+    }
+    Get.find<Logger>().w('End `getUserAuth` in ApiServiceImpl');
   }
 
   Future<Map<String, dynamic>> post({
@@ -30,7 +47,7 @@ class ApiService extends GetxService {
     bool needToken = false,
   }) async {
     try {
-      Get.find<Logger>().i('Start post `$subUrl` |ApiServiceImpl| data: $data');
+      Get.find<Logger>().i('Start post `$subUrl` |ApiServiceImpl|  data: $data');
       // if (!(await networkInfo.isConnected)) {
       //   throw OfflineException();
       // }
@@ -40,13 +57,13 @@ class ApiService extends GetxService {
           subUrl,
         ),
         body: json.encode(data),
-        headers: setHeaders(),
+        headers: needToken ? setHeadersWithToken(token: userAuth!.token) : setHeaders(),
       );
       getExceptionStatusCode(response);
       Get.find<Logger>().w('End post `$subUrl` |ApiServiceImpl| response: ${json.decode(response.body)}');
       return Future.value(json.decode(response.body));
-    } catch (e) {
-      Get.find<Logger>().e('End post `$subUrl` |ApiServiceImpl| Exception: ${e.runtimeType}');
+    } catch (e, s) {
+      Get.find<Logger>().e('End post `$subUrl` |ApiServiceImpl| Exception: ${e.runtimeType}, $s');
       rethrow;
     }
   }
@@ -69,13 +86,13 @@ class ApiService extends GetxService {
           subUrl,
           parameters,
         ),
-        headers: setHeaders(),
+        headers: needToken ? setHeadersWithToken(token: userAuth!.token) : setHeaders(),
       );
       getExceptionStatusCode(response);
       Get.find<Logger>().w('End get `$subUrl` |ApiServiceImpl| response: ${response.body}');
       return Future.value((json.decode(response.body)));
-    } catch (e) {
-      Get.find<Logger>().e('End get `$subUrl` |ApiServiceImpl| Exception: ${e.runtimeType}');
+    } catch (e, s) {
+      Get.find<Logger>().e('End get `$subUrl` |ApiServiceImpl| Exception: ${e.runtimeType} $s');
       rethrow;
     }
   }
